@@ -73,6 +73,13 @@ class Booking(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     centre_test: Mapped[CentreTest] = relationship()
+    @property
+    def centre(self):
+        return self.centre_test.centre
+
+    @property
+    def test(self):
+        return self.centre_test.test
 
 
 class Payment(Base):
