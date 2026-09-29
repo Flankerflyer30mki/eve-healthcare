@@ -4,6 +4,7 @@ from decimal import Decimal
 from pydantic import AwareDatetime, BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 from app.models import BookingStatus
+from app.models import BookingStatus, PaymentStatus
 
 
 # ---------- auth ----------
@@ -101,3 +102,25 @@ class BookingOut(BaseModel):
     created_at: datetime
     centre: CentreBrief
     test: TestOut
+
+# ---------- payments ----------
+class PaymentCreate(BaseModel):
+    booking_id: int
+    outcome: PaymentStatus | None = None  # optional: force the simulated result (useful for tests)
+
+
+class PaymentOut(BaseModel):
+    id: int
+    booking_id: int
+    amount: Decimal
+    status: PaymentStatus
+    provider_ref: str
+    created_at: datetime
+    booking_status: BookingStatus
+
+
+class WebhookPayload(BaseModel):
+    event_id: str = Field(min_length=1, max_length=64)
+    booking_id: int
+    provider_ref: str = Field(min_length=1, max_length=64)
+    status: PaymentStatus
