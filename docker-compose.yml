@@ -18,7 +18,7 @@ services:
     build: .
     env_file: .env
     environment:
-    DATABASE_URL: postgresql+psycopg://eve:eve@db:5432/eve
+      DATABASE_URL: postgresql+psycopg://eve:eve@db:5432/eve
     ports:
       - "8000:8000"
     depends_on:
